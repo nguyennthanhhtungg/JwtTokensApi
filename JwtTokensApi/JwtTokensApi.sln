@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtTokensApi", "JwtTokensApi.csproj", "{915532E4-077F-4D74-ACFA-3069074D2E3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary1", "..\ClassLibrary1\ClassLibrary1.csproj", "{66311756-BE33-40AD-A773-AC25CC9988E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{915532E4-077F-4D74-ACFA-3069074D2E3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915532E4-077F-4D74-ACFA-3069074D2E3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915532E4-077F-4D74-ACFA-3069074D2E3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915532E4-077F-4D74-ACFA-3069074D2E3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66311756-BE33-40AD-A773-AC25CC9988E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66311756-BE33-40AD-A773-AC25CC9988E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66311756-BE33-40AD-A773-AC25CC9988E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66311756-BE33-40AD-A773-AC25CC9988E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AEE9973-3532-4F1A-BFF1-79FA118004C2}
+	EndGlobalSection
+EndGlobal
