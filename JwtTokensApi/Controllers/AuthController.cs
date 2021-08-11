@@ -31,18 +31,15 @@ namespace JwtTokensApi.Controllers
         private readonly JwtBearerTokenSettings _jwtBearerTokenSettings;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
-        private readonly ILogger<AuthController> _logger;
         private readonly IJwtService _jwtService;
         private readonly IRefreshTokenService _refreshTokenService;
 
         public AuthController(IOptions<JwtBearerTokenSettings> jwtTokenOptions, IMapper mapper,
-            IUserService userService, ILogger<AuthController> logger,
-             IJwtService jwtService, IRefreshTokenService refreshTokenService)
+            IUserService userService, IJwtService jwtService, IRefreshTokenService refreshTokenService)
         {
             this._jwtBearerTokenSettings = jwtTokenOptions.Value;
             this._mapper = mapper;
             this._userService = userService;
-            this._logger = logger;
             this._jwtService = jwtService;
             this._refreshTokenService = refreshTokenService;
         }
@@ -113,6 +110,19 @@ namespace JwtTokensApi.Controllers
             HttpContext.Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
 
+        private void removeRefreshTokenCookie()
+        {
+            // Append cookie (expired) with refresh token to the http response
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                Expires = DateTime.UtcNow.AddDays(-1)
+            };
+
+            HttpContext.Response.Cookies.Append("refreshToken", "", cookieOptions);
+        }
+
         [AllowAnonymous]
         [HttpGet]
         [Route("RefreshToken")]
@@ -122,11 +132,9 @@ namespace JwtTokensApi.Controllers
             {
                 string refreshToken = HttpContext.Request.Cookies["refreshToken"];
 
-                if (refreshToken != null)
+                if (!string.IsNullOrEmpty(refreshToken))
                 {
                     RefreshToken validatedRefreshToken = await _refreshTokenService.ValidateRefreshToken(refreshToken);
-
-                    _logger.LogInformation(JsonConvert.SerializeObject(validatedRefreshToken));
 
                     if (validatedRefreshToken != null)
                     {
@@ -138,6 +146,8 @@ namespace JwtTokensApi.Controllers
                     }
                     else
                     {
+                        removeRefreshTokenCookie();
+
                         throw new HttpStatusCodeException(HttpStatusCode.BadRequest, "Refresh Token revoked or expired!");
                     }
                 }
@@ -160,20 +170,12 @@ namespace JwtTokensApi.Controllers
         {
             string refreshToken = HttpContext.Request.Cookies["refreshToken"];
 
-            if(string.IsNullOrEmpty(refreshToken))
+            if(!string.IsNullOrEmpty(refreshToken))
             {
                 // Revoke Refresh Token 
                 RefreshToken revokedRefreshToken = await _refreshTokenService.RevokeRefreshToken(refreshToken);
 
-                // Set Token Cookie
-                var cookieOptions = new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure = true,
-                    Expires = DateTime.UtcNow.AddDays(-1)
-                };
-
-                HttpContext.Response.Cookies.Append("refreshToken", "", cookieOptions);
+                removeRefreshTokenCookie();
 
                 return Ok(revokedRefreshToken);
             }

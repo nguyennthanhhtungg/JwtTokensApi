@@ -20,13 +20,11 @@ namespace JwtTokensApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserService userService, IMapper mapper, ILogger<UsersController> logger)
+        public UsersController(IUserService userService, IMapper mapper)
         {
             this._userService = userService;
             this._mapper = mapper;
-            this._logger = logger;
         }
 
         [Authorize(Roles = "Admin")]

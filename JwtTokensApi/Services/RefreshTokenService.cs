@@ -1,6 +1,8 @@
 ﻿using JwtTokensApi.Models;
 using JwtTokensApi.Repositories;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +54,7 @@ namespace JwtTokensApi.Services
 
         public async Task<RefreshToken> RevokeRefreshToken(string token)
         {
-            return await _refreshTokenRepository.GetRefreshTokenByToken(token);
+            return await _refreshTokenRepository.RevokeRefreshToken(token);
         }
 
         public async Task<RefreshToken> ValidateRefreshToken(string token)
@@ -61,7 +63,13 @@ namespace JwtTokensApi.Services
 
             if (refreshToken != null)
             {
-                if(refreshToken.RevokedOn != null || refreshToken.RevokedOn.Value <= DateTime.UtcNow)
+                if(refreshToken.RevokedOn != null)
+                {
+                    return null;
+                }
+
+
+                if (refreshToken.ExpiryOn <= DateTime.UtcNow)
                 {
                     refreshToken.RevokedOn = DateTime.UtcNow;
 

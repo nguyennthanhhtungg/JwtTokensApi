@@ -20,13 +20,11 @@ namespace JwtTokensApi.Controllers
     {
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IMapper _mapper;
-        private readonly ILogger<RefreshTokensController> _logger;
 
-        public RefreshTokensController(IRefreshTokenService refreshTokenService, IMapper mapper, ILogger<RefreshTokensController> logger)
+        public RefreshTokensController(IRefreshTokenService refreshTokenService, IMapper mapper)
         {
             this._refreshTokenService = refreshTokenService;
             this._mapper = mapper;
-            this._logger = logger;
         }
 
         [HttpGet]

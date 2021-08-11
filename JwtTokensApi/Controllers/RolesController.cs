@@ -20,13 +20,11 @@ namespace JwtTokensApi.Controllers
     {
         private readonly IRoleService _roleService;
         private readonly IMapper _mapper;
-        private readonly ILogger<RolesController> _logger;
 
-        public RolesController(IRoleService roleService, IMapper mapper, ILogger<RolesController> logger)
+        public RolesController(IRoleService roleService, IMapper mapper)
         {
             this._roleService = roleService;
             this._mapper = mapper;
-            this._logger = logger;
         }
 
         [HttpGet]
